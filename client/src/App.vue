@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import Button from 'primevue/button'
+import { useTransactionsStore } from './stores/transactions'
+
+const totals = useTransactionsStore().entryTotal
 </script>
 
 <template>
-  <main class="main">
-    <header>
-      <div class="card flex justify-center">
-        <Button label="Verify" />
-      </div>
-    </header>
+  <header>
+    <h1>Basic Bookkeeper</h1>
+    <div>total: {{ totals }}</div>
+    <div>{{ new Date().toLocaleDateString() }}</div>
+  </header>
 
-    <RouterView />
-  </main>
+  <RouterView />
 </template>
 
 <style scoped>

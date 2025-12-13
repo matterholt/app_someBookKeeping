@@ -8,10 +8,8 @@ import router from './router'
 
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura'
-import BookKeepingView from './components/pages/BookKeepingView/BookKeepingView.vue'
 
 const app = createApp(App)
-app.component('BookKeepingView', BookKeepingView)
 
 app.use(PrimeVue, {
   theme: {

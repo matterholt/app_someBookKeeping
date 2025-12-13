@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: '/bookKeeping',
       name: 'bookKeeping',
-      component: () => import('../components/pages/BookKeepingView/BookKeepingView.vue'),
+      component: () => import('../views/TransactionView.vue'),
     },
   ],
 })
