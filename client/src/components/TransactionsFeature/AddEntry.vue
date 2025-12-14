@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
 import { useTransactionsStore } from '@/stores/transactions'
-import Button from 'primevue/button'
+
+import Fieldset from 'primevue/fieldset'
 
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
-import IftaLabel from 'primevue/iftalabel'
 import AutoComplete from 'primevue/autocomplete'
 import DatePicker from 'primevue/datepicker'
 
-const transactionItem = ref('')
+import Message from 'primevue/message'
+import Button from 'primevue/button'
+
+const attemptedToSubmit = ref(0)
+
 const date = ref(new Date())
-const moneyAmount = ref('-100.00')
+const transactionItem = ref('')
 const selectedAccount = ref('')
-const value3 = ref(-1000)
+const moneyAmount = ref(0.0)
 
 const accounts = ref(['account1', 'account2', 'account3'])
 const search = (event: any) => {
@@ -23,63 +26,91 @@ const search = (event: any) => {
     account.toLowerCase().startsWith(query.toLowerCase()),
   )
 }
-
+function resetForm() {
+  transactionItem.value = ''
+  date.value = new Date()
+  selectedAccount.value = ''
+  moneyAmount.value = 0.0
+}
 function addEntry() {
   const account = selectedAccount.value
   const entryItem = transactionItem.value
   const entryDate = date.value.toLocaleDateString()
+  const amount = moneyAmount.value
 
-  const amount = {
-    dollar: moneyAmount.value.toString(),
-    cent: '00',
-    moneyFlow: 'income',
+  if ([account, entryItem, entryDate].every((x) => x !== '') && amount !== 0.0) {
+    attemptedToSubmit.value = 0
+    resetForm()
+    useTransactionsStore().addEntry(account, entryItem, entryDate, amount)
+  } else {
+    attemptedToSubmit.value++
   }
-
-  console.log('ADDING ENTERy')
-  console.log(moneyAmount.value)
-  useTransactionsStore().addEntry(account, entryItem, entryDate, amount)
 }
 </script>
 <template>
-  <div class="flex">
-    <DatePicker v-model="date" />
-    <AutoComplete
-      placeholder="Select Account"
-      v-model="selectedAccount"
-      dropdown
-      :suggestions="accounts"
-      @complete="search"
-    />
-    <InputText v-model="transactionItem" placeholder="where money going" />
-    <IftaLabel>
-      <InputNumber
-        v-model="moneyAmount"
-        inputId="price"
-        mode="currency"
-        currency="USD"
-        locale="en-US"
-      />
-      <label for="price">Price</label>
-    </IftaLabel>
+  <Fieldset legend="Add Entry">
+    <div class="addEntry_layout">
+      <div class="entryContainer">
+        <DatePicker v-model="date" />
+      </div>
+      <div class="entryContainer">
+        <AutoComplete
+          placeholder="Select Account"
+          v-model="selectedAccount"
+          dropdown
+          :suggestions="accounts"
+          @complete="search"
+        />
 
-    <InputNumber
-      v-model="value3"
-      inputId="horizontal-buttons"
-      showButtons
-      buttonLayout="horizontal"
-      :step="0.25"
-      mode="currency"
-      currency="USD"
-      fluid
-    >
-      <template #incrementbuttonicon>
-        <span class="pi pi-plus" />
-      </template>
-      <template #decrementbuttonicon>
-        <span class="pi pi-minus" />
-      </template>
-    </InputNumber>
+        <Message
+          v-show="!transactionItem && attemptedToSubmit > 0"
+          severity="error"
+          variant="simple"
+          size="small"
+          >Account is required</Message
+        >
+      </div>
+      <div class="entryContainer">
+        <InputText v-model="transactionItem" placeholder="where money going" />
 
-    <Button label="Submit" @click="addEntry" />
-  </div>
+        <Message
+          v-show="!transactionItem && attemptedToSubmit > 0"
+          severity="error"
+          variant="simple"
+          size="small"
+          >Item description is required</Message
+        >
+      </div>
+
+      <div class="entryContainer">
+        <InputNumber
+          v-model="moneyAmount"
+          inputId="horizontal-buttons"
+          showButtons
+          buttonLayout="horizontal"
+          :step="0.25"
+          mode="currency"
+          currency="USD"
+          fluid
+        >
+        </InputNumber>
+      </div>
+      <div class="entryContainer">
+        <Button label="Submit" @click="addEntry" />
+      </div>
+    </div>
+  </Fieldset>
 </template>
+<style>
+.addEntry_layout {
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-columns: 50%;
+  width: 650px;
+  gap: 20px;
+}
+.entryContainer {
+  display: flex;
+  flex-direction: column;
+}
+</style>

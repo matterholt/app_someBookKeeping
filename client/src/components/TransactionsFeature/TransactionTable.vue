@@ -25,7 +25,6 @@ const stockSeverity = (moneyFlow: string): string => {
 </script>
 
 <template>
-  <ActionBar />
   <DataTable :value="entries" tableStyle="min-width: 50rem">
     <Column v-for="col of columns" :key="col.id" :field="col.field" :header="col.header">
       <template v-if="col.field === 'amount'" #body="slotProps">

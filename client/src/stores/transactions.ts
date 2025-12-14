@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { formatMoney } from '@/utils/moneyFormatter'
+import { formatMoneyString } from '@/utils/moneyFormatter'
 export const useTransactionsStore = defineStore('transactions', () => {
   const entries = ref([
     {
@@ -33,18 +33,13 @@ export const useTransactionsStore = defineStore('transactions', () => {
     }, 0)
   })
 
-  function addEntry(
-    account: string,
-    item: string,
-    date: string,
-    amount: { dollar: string; cent: string; moneyFlow: string },
-  ) {
+  function addEntry(account: string, item: string, date: string, amount: number) {
     entries.value.push({
       id: entries.value.length + 1,
       account,
       item,
       date,
-      amount,
+      amount: formatMoneyString(amount),
     })
   }
   return { entries, entryTotal, addEntry }
