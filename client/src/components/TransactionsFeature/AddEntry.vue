@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useTransactionsStore } from '@/stores/transactions'
+import { useAccountsStore } from '@/stores/accounts'
 
 import Fieldset from 'primevue/fieldset'
 
@@ -19,10 +20,10 @@ const transactionItem = ref('')
 const selectedAccount = ref('')
 const moneyAmount = ref(0.0)
 
-const accounts = ref(['account1', 'account2', 'account3'])
+const accounts = ref([])
 const search = (event: any) => {
   const query = event.query
-  accounts.value = ['account1', 'account2', 'account3'].filter((account) =>
+  accounts.value = [...useAccountsStore().accountsNames].filter((account) =>
     account.toLowerCase().startsWith(query.toLowerCase()),
   )
 }
