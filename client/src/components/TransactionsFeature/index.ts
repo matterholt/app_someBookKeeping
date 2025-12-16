@@ -1,5 +1,6 @@
 import TransactionTable from './TransactionTable.vue'
 import ActionBar from './ActionBar.vue'
 import AddEntry from './AddEntry.vue'
+import FinanceState from './FinanceState.vue'
 
-export { ActionBar, TransactionTable, AddEntry }
+export { FinanceState, ActionBar, TransactionTable, AddEntry }

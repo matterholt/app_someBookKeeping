@@ -97,7 +97,8 @@ function addEntry() {
         </InputNumber>
       </div>
       <div class="entryContainer">
-        <Button label="Submit" @click="addEntry" />
+        <Button label="Add One" @click="addEntry" />
+        <Button label="Add Another" @click="addEntry" />
       </div>
     </div>
   </Fieldset>
@@ -112,6 +113,7 @@ function addEntry() {
 }
 .entryContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 </style>

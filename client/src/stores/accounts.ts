@@ -4,17 +4,17 @@ import { defineStore } from 'pinia'
 export const useAccountsStore = defineStore('accounts', () => {
   const userAccounts = ref([
     {
-      name: 'account 1',
+      name: 'account 11',
       isDefault: true,
       id: 1,
     },
     {
-      name: 'account 2',
+      name: 'account 22',
       isDefault: false,
       id: 2,
     },
     {
-      name: 'account 3',
+      name: 'account 33',
       isDefault: false,
       id: 3,
     },

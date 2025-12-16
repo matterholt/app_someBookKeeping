@@ -1,8 +1,11 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { formatMoneyString } from '@/utils/moneyFormatter'
+import { formatMoneyString, sumOfTotals } from '@/utils/moneyFormatter'
+
+import type { BookkeepingEntries, WhichEntry } from '@/Types/TransactionEntries'
+
 export const useTransactionsStore = defineStore('transactions', () => {
-  const entries = ref([
+  const entries = ref(<BookkeepingEntries[]>[
     {
       id: 1,
       account: 'Account 1',
@@ -33,6 +36,11 @@ export const useTransactionsStore = defineStore('transactions', () => {
     }, 0)
   })
 
+  function calculateAmounts(whichEntry: WhichEntry) {
+    const entryType = entries.value.filter((entry) => entry.amount.moneyFlow === whichEntry)
+    return sumOfTotals(entryType)
+  }
+
   function addEntry(account: string, item: string, date: string, amount: number) {
     entries.value.push({
       id: entries.value.length + 1,
@@ -42,5 +50,5 @@ export const useTransactionsStore = defineStore('transactions', () => {
       amount: formatMoneyString(amount),
     })
   }
-  return { entries, entryTotal, addEntry }
+  return { entries, entryTotal, addEntry, calculateAmounts }
 })
