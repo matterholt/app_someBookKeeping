@@ -19,7 +19,6 @@ const date = ref(new Date())
 const transactionItem = ref('')
 const selectedAccount = ref('')
 const moneyAmount = ref(0.0)
-
 const accounts = ref([])
 const search = (event: any) => {
   const query = event.query

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { FinanceState, TransactionTable, AddEntry } from '@/components/TransactionsFeature'
+import { FormStep, FinanceState, TransactionTable, AddEntry } from '@/features/TransactionsFeature'
 </script>
 <template>
   <main>
     <FinanceState />
-    <AddEntry />
+    <FormStep />
     <TransactionTable />
   </main>
 </template>
